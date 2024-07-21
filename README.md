@@ -3,10 +3,10 @@
 Uso
 
     Crear Respaldo:
-        Introduce la ruta del directorio del juego en el campo de texto y haz clic en "Crear Backup".
+        Introduce la ruta del directorio del juego (debe estar en su versión Vanilla) en el campo de texto y haz clic en "Crear Lista".
 
     Restaurar Estado Original:
-        Introduce la ruta del directorio del juego y haz clic en "Restaurar Backup". El programa verificará los archivos y carpetas, eliminando los elementos no listados en el respaldo.
+        Introduce la ruta del directorio del juego y haz clic en "Borrar Mods". El programa verificará los archivos y carpetas, eliminando los elementos no listados en el respaldo.
 
 Notas
 

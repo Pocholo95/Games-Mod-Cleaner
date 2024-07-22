@@ -34,18 +34,22 @@ def remove_directory(directory):
 
 def create_backup(path):
     path = str(Path(path).resolve())
-    backup_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), BACKUP_DIR)
+    executable_dir = os.path.dirname(os.path.abspath(__file__))
+    backup_dir = os.path.join(executable_dir, BACKUP_DIR)
     os.makedirs(backup_dir, exist_ok=True)
     backup_file_path = os.path.join(backup_dir, f'{os.path.basename(path)}_Backup.json')
+    print(f"Saving backup to: {backup_file_path}")  # Debug line
     with open(backup_file_path, 'w') as f:
         json.dump(get_file_tree(path), f)
 
 def restore_vanilla(path):
     path = str(Path(path).resolve())
-    backup_file_path = os.path.join(BACKUP_DIR, f'{os.path.basename(path)}_Backup.json')
+    executable_dir = os.path.dirname(os.path.abspath(__file__))
+    backup_file_path = os.path.join(executable_dir, BACKUP_DIR, f'{os.path.basename(path)}_Backup.json')
+    print(f"Loading backup from: {backup_file_path}")  # Debug line
 
     if not os.path.exists(backup_file_path):
-        messagebox.showerror('Error', 'No se encontró el archivo de copia de seguridad para esta ruta')
+        messagebox.showerror('Error', 'No backup file found for this path')
         return
 
     with open(backup_file_path, 'r') as f:
@@ -66,20 +70,20 @@ def restore_vanilla(path):
     
     if not missing_files and not missing_folders:
         if not new_files and not new_folders:
-            messagebox.showinfo("Sin Cambios", "No hay cambios en la lista de archivos.")
+            messagebox.showinfo("No Changes", "There are no changes to the list of files.")
         elif new_files:
-            if messagebox.askyesno("Archivos No Listados", f"Encontró {len(new_files)} archivos no listados. ¿Eliminar estos archivos?"):
+            if messagebox.askyesno("Unlisted Files", f"Found {len(new_files)} unlisted files. Delete them?"):
                 for file in new_files:
                     try:
                         os.remove(os.path.join(path, file))
                     except OSError as e:
-                        print(f"Error al eliminar el archivo {file}: {e}")
+                        print(f"Error removing file {file}: {e}")
 
     if missing_files:
-        messagebox.showwarning("Archivos Faltantes", "Faltan los siguientes archivos:\n" + "\n".join(missing_files))
+        messagebox.showwarning("Missing Files", "The following files are missing:\n" + "\n".join(missing_files))
     
     if new_folders:
-        if messagebox.askyesno("Nuevas Carpetas", f"Encontró {len(new_folders)} nuevas carpetas. ¿Eliminar estas carpetas?"):
+        if messagebox.askyesno("New Folders", f"Found {len(new_folders)} new folders. Delete them?"):
             for folder in new_folders:
                 remove_directory(os.path.join(path, folder))
 
@@ -160,11 +164,11 @@ class BackupMaker:
     def configure_texts(self):
         if self.language == '0409':  # English (US)
             self.texts = {
-                "create_backup": "List Files",
-                "restore_backup": "Delate Mods",
+                "create_backup": "Create Backup",
+                "restore_backup": "Restore Backup",
                 "error_path": "Path does not exist.",
-                "backup_created": "The list file has been created in the backups folder.",
-                "error_no_backup": "No list file found for this path",
+                "backup_created": "The backup file has been created in the backups folder.",
+                "error_no_backup": "No backup file found for this path",
                 "no_changes": "There are no changes to the list of files.",
                 "unlisted_files": "Found {} unlisted files. Delete them?",
                 "missing_files": "The following files are missing:\n",
@@ -174,11 +178,11 @@ class BackupMaker:
             }
         else:  # Default to Spanish
             self.texts = {
-                "create_backup": "Crear Lista",
-                "restore_backup": "Borrar Mods",
+                "create_backup": "Crear Backup",
+                "restore_backup": "Restaurar Backup",
                 "error_path": "El path no existe.",
                 "backup_created": "El archivo de copia de seguridad ha sido creado en la carpeta de backups.",
-                "error_no_backup": "No se encontró archivo de lista seguridad para este path",
+                "error_no_backup": "No se encontró archivo de copia de seguridad para este path",
                 "no_changes": "No hay cambios en la lista de archivos.",
                 "unlisted_files": "Encontró {} archivos no listados. ¿Quieres borrarlos?",
                 "missing_files": "Los siguientes archivos faltan:\n",

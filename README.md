@@ -1,6 +1,6 @@
 # Games-Mod-Cleaner
 
-Si ya tienes mods instalados y quieres eliminarlos busca en la carpeta backups del repositorio y muevelas a \games_mods_cleaner\_internal\backups
+Si ya tienes mods instalados y quieres eliminarlos busca en la carpeta backups del repositorio (si esta disponible la lista del juego) y muevelas a \games_mods_cleaner\_internal\backups
 
 Uso
 
